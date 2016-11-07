@@ -31,17 +31,17 @@ domain = conf['domain']
 fileSize = path.getsize(logFile)
 
 #过滤
-r = re.compile(conf['dump']['fitter'])
+r = re.compile(conf['dump']['fitter'],re.I)
 
 #蜘蛛
 #百度蜘蛛
-bdSpider = re.compile('BaiduSpider|baiduspider')
+bdSpider = re.compile('Baiduspider|baiduspider',re.I)
 #搜狗蜘蛛
-souguoSpider = re.compile('Sogou web spider|Sogou inst spider|Sogou spider2|Sogou blog|Sogou News Spider|Sogou Orion spider')
+souguoSpider = re.compile('Sogou web spider|Sogou inst spider|Sogou spider2|Sogou blog|Sogou News Spider|Sogou Orion spider',re.I)
 #360蜘蛛
-haosouSpider = re.compile('360Spider|haosouspider')
+haosouSpider = re.compile('360Spider|haosouspider',re.I)
 #谷歌蜘蛛
-googleSpider = re.compile('googlebot|googlebot-mobile|googlebot-image|mediapartners-google|adsbot-google')
+googleSpider = re.compile('googlebot|googlebot-mobile|googlebot-image|mediapartners-google|adsbot-google',re.I)
 
 log = open(logFile,'r',encoding='UTF-8')
 connection = pymysql.connect(host=db['host'], user=db['user'], password=db['pwd'],db=db['database'],charset=db['charset'])
