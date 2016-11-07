@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+{% block cont %}
+<h1 class="page-header">每日访问详情</h1>
+<div>
+    <form class="form-inline" role="form" id="form">
+        <div class="form-group">
+            <label class="sr-only" for="logData">要查询的日期</label>
+            <input type="text" name="logData" readonly class="form-control" id="logData">
+        </div>
+        <div class="form-group">
+            <label class="sr-only">蜘蛛</label>
+            <select name="bot" class="form-control" id="bot">
+                <option value="1">百度</option>
+                <option value="2">搜狗</option>
+                <option value="3">360</option>
+                <option value="4">谷歌</option>
+            </select>
+        </div>
+        <button type="button" id="selectLog" class="btn btn-default">查询</button>
+    </form>
+</div>
+
+<div>
+    <div id='canvasDiv'></div>
+</div>
+{% endblock %}
+{% block footer %}
+<script>
+
+var curDate = '';
+var bot = '';
+function mat(a,di){
+    var len = a.length;
+    var d = new Array();
+    for(var i = 0; i < len; i++) {
+        d.push(a[i]/di);
+    }
+    return d;
+}
+function draw(d){
+    console.log(d);
+    //宽度
+    var _w = $("#canvasDiv").width() - 20;
+    var data = [
+        {
+            name : bot+'访问量',
+            value:d.data,
+            color:'#aad0db',
+            line_width:2
+        }
+    ];
+
+    //创建x轴标签文本
+    var labels = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+    var chart = new iChart.Area2D({
+        render : 'canvasDiv',
+        data: data,
+        align:'center',
+        title : bot + curDate + ' 24小时访问统计',
+        subtitle : '',
+        footnote : 'by yzk',
+        width : 1300,
+        height : 600,
+        background_color:'#FEFEFE',
+        tip:{
+            enable:true,
+            shadow:true,
+            move_duration:400,
+            border:{
+                enable:true,
+                radius : 5,
+                width:2,
+                color:'#3f8695'
+            },
+            listeners:{
+                //tip:提示框对象、name:数据名称、value:数据值、text:当前文本、i:数据点的索引
+                parseText:function(tip,name,value,text,i){
+                    return name+"访问量:"+value+"";
+                }
+            }
+        },
+        tipMocker:function(tips,i){
+            var t = i+":00-"+(i + 1)+":00"
+            return "<div style='font-weight:600'>"+t+"</div>"+tips.join("<br/>");
+        },
+        legend : {
+            enable : true,
+            row:1,//设置在一行上显示，与column配合使用
+            column : 'max',
+            valign:'top',
+            sign:'bar',
+            background_color:null,//设置透明背景
+            offsetx:-80,//设置x轴偏移，满足位置需要
+            border : true
+        },
+        crosshair:{
+            enable:true,
+            line_color:'#3f8695',
+            line_width:2
+        },
+        sub_option : {
+            label:false,
+            point_size:10
+        },
+        coordinate:{
+            width:'90%',
+            height:'80%',
+            axis:{
+                color:'#dcdcdc',
+                width:1
+            },
+            scale:[
+                {
+                    position:'left',	
+                    scale_color:'#9f9f9f'
+                },
+                {
+                    position:'bottom',	
+                    labels:labels
+                }
+            ]
+        }
+    });
+
+    //开始画图
+    chart.draw();
+}
+ $(function(){
+     $("#logData").jeDate({
+        format:"YYYY-MM-DD",
+        isTime:false, 
+        minDate:"2014-09-19"
+    });
+    $("#selectLog").on("click",function(e){
+        e.preventDefault();
+        //获取数据
+        var api = new Api();
+        curDate = $("#logData").val();
+        bot = $("#bot option:selected").text();
+        api.bot($("#form").serialize(),function(j){draw(j)});
+    });
+     
+
+     
+});
+</script>
+{% endblock %}

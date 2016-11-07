@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block cont %}
+<h1 class="page-header">查询服务器状态码对应的链接</h1>
+<div>
+    <form class="form-inline" role="form" id="form">
+        <div class="form-group">
+            <label class="sr-only" for="inpstart">起始日期</label>
+            <input type="text" name="inpstart" readonly class="form-control" id="inpstart" placeholder="起始日期">
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="inpend">结束日期</label>
+            <input type="text" name="inpend" readonly class="form-control" id="inpend"  placeholder="结束日期">
+        </div>
+        <div class="form-group">
+            <label class="sr-only">服务器状态码</label>
+            <input type="number" name="code" id="path" class="form-control" placeholder="服务器状态码" value="404">
+        </div>
+        <div class="form-group">
+            <label class="sr-only">数据量</label>
+            <input type="number" name="limit" id="limit" class="form-control"  value="100">
+        </div>
+        <button type="button" id="selectLog" class="btn btn-default">查询</button>
+    </form>
+</div>
+<hr>
+<div id="c" style="display:none;">
+<h3 id="conth3"></h3>
+<table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th class="col-xs-3">链接</th>
+          <th class="col-xs-1">服务器状态码</th>
+          <th class="col-xs-1">时间</th>
+          <th class="col-xs-3">Referer</th>
+        </tr>
+      </thead>
+      <tbody id="precont">
+      </tbody>
+</table>
+</div>
+
+
+
+{% endblock %}
+{% block footer %}
+<script>
+function timeformat (t) {
+    date = new Date(t*1000);
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+}
+
+var startData = "",endData = "",curUrl ="",limit=0;
+function draw(j){
+    var d = j.data;
+    var pre = "",next="";
+    var len = d.length;
+    for(var i = 0; i < len; i++) {
+        pre += "<tr><td>"+d[i].path+"</td><td>"+d[i].status+"</td><td>"+timeformat(d[i].datetime)+"</td><td>"+d[i].referer+"</td></tr>";
+    }
+    $("#precont").html(pre);
+    $("#conth3").text(startData+"到"+endData+"时间内服务器响应为 "+curUrl+" 的前"+limit+"条数据");
+    $("#c").show();
+}
+    $(function(){
+        var start = {
+            format: 'YYYY-MM-DD',
+            minDate: '2014-06-16', //设定最小日期为当前日期
+            festival:true,
+            //isinitVal:true,
+            maxDate: $.nowDate(0), //最大日期
+            choosefun: function(elem,datas){
+                end.minDate = datas; //开始日选好后，重置结束日的最小日期
+            }
+        };
+        var end = {
+            format: 'YYYY-MM-DD',
+            minDate: $.nowDate(0), //设定最小日期为当前日期
+            festival:true,
+            //isinitVal:true,
+            maxDate: '2099-06-16', //最大日期
+            choosefun: function(elem,datas){
+                start.maxDate = datas; //将结束日的初始值设定为开始日的最大日期
+            }
+        };
+
+        $("#inpstart").jeDate(start);
+        $("#inpend").jeDate(end);
+
+
+        $("#selectLog").on("click",function(e){
+            e.preventDefault();
+            startData = $("#inpstart").val();
+            endData = $("#inpend").val();
+            curUrl = $("#path").val();
+            limit = $("#limit").val();
+            var api = new Api();
+            api.serverStatus($("#form").serialize(),function(j){draw(j)});
+        })
+
+    });
+</script>
+{% endblock %}

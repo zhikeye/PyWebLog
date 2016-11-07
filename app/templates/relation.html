@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block cont %}
+<h1 class="page-header">查询链接的上下游</h1>
+<div>
+    <form class="form-inline" role="form" id="form">
+        <div class="form-group">
+            <label class="sr-only" for="inpstart">起始日期</label>
+            <input type="text" name="inpstart" readonly class="form-control" id="inpstart" placeholder="起始日期">
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="inpend">结束日期</label>
+            <input type="text" name="inpend" readonly class="form-control" id="inpend"  placeholder="结束日期">
+        </div>
+        <div class="form-group">
+            <label class="sr-only">URL</label>
+            <input type="text" name="url" id="path" class="form-control" placeholder="URL">
+        </div>
+        <button type="button" id="selectLog" class="btn btn-default">查询</button>
+    </form>
+</div>
+<hr>
+<div id="c" style="display:none;">
+<h3 id="conth3"></h3>
+<table class="table table-bordered table-striped">
+      <colgroup>
+        <col class="col-xs-8">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>上游URL</th>
+        </tr>
+      </thead>
+      <tbody id="precont">
+      </tbody>
+</table>
+<table class="table table-bordered table-striped">
+      <colgroup>
+        <col class="col-xs-8">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>下游URL</th>
+        </tr>
+      </thead>
+      <tbody id="nextcont">
+      </tbody>
+</table>
+</div>
+
+
+
+{% endblock %}
+{% block footer %}
+<script>
+var startData = "",endData = "",curUrl =""
+function draw(j){
+    var d = j.data;
+    var pre = "",next="";
+    var len = d.pre.length;
+    for(var i = 0; i < len; i++) {
+        pre += "<tr><td>"+d.pre[i]+"</td></tr>"
+    }
+    var len = d.next.length;
+    for(var i = 0; i < len; i++) {
+        next += "<tr><td>"+d.next[i]+"</td></tr>"
+    }
+    $("#precont").html(pre);
+    $("#nextcont").html(next);
+    $("#conth3").text(startData+"到"+endData+"时间内 "+curUrl+" 的上下游前20条数据");
+    $("#c").show();
+}
+    $(function(){
+        var start = {
+            format: 'YYYY-MM-DD',
+            minDate: '2014-06-16', //设定最小日期为当前日期
+            festival:true,
+            //isinitVal:true,
+            maxDate: $.nowDate(0), //最大日期
+            choosefun: function(elem,datas){
+                end.minDate = datas; //开始日选好后，重置结束日的最小日期
+            }
+        };
+        var end = {
+            format: 'YYYY-MM-DD',
+            minDate: $.nowDate(0), //设定最小日期为当前日期
+            festival:true,
+            //isinitVal:true,
+            maxDate: '2099-06-16', //最大日期
+            choosefun: function(elem,datas){
+                start.maxDate = datas; //将结束日的初始值设定为开始日的最大日期
+            }
+        };
+
+        $("#inpstart").jeDate(start);
+        $("#inpend").jeDate(end);
+
+
+        $("#selectLog").on("click",function(e){
+            e.preventDefault();
+            startData = $("#inpstart").val();
+            endData = $("#inpend").val();
+            curUrl = $("#path").val();
+            var api = new Api();
+            api.relation($("#form").serialize(),function(j){draw(j)});
+        })
+
+    });
+</script>
+{% endblock %}

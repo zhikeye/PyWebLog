@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block cont %}
+<h1 class="page-header">响应状态</h1>
+<div>
+    <form class="form-inline" role="form" id="form">
+        <div class="form-group">
+            <label class="sr-only" for="logData">要查询的日期</label>
+            <input type="text" name="logData" class="form-control" id="logData" readonly>
+        </div>
+        <button type="button" id="selectLog" class="btn btn-default">查询</button>
+    </form>
+</div>
+<div>
+    <div id='canvasDiv'></div>
+</div>
+{% endblock %}
+{% block footer %}
+<script>
+var curDate = '';
+
+function draw(d){
+    var count = 0;
+    var len = d.data.length;
+    for(var i = 0; i < len; i++) {
+        count += d.data[i].num;
+    }
+    var data = new Array();
+    for(var i = 0; i < len; i++) {
+        p = d.data[i].num / count * 100;
+        var color = '#a5aaaa';
+        if(d.data[i].code >= 200 && d.data[i].code < 300) {
+            color = '#5d7f97';
+        } else if (d.data[i].code >= 300 && d.data[i].code < 400) {
+            color = '#97b3bc';
+        } else if (d.data[i].code >= 400 && d.data[i].code < 500) {
+            color = '#778088';
+        } else if (d.data[i].code >= 500) {
+            color = '#9d4a4a';
+        }
+        data.push({"name":"状态码:"+ d.data[i].code,"value":p,"color":color});
+    }
+    new iChart.Pie2D({
+        render: 'canvasDiv',
+        data: data,
+        footnote : 'by yzk',
+        title: curDate + '服务器响应状态占比',
+        legend: {
+            enable: true
+        },
+        showpercent: true,
+        decimalsnum: 2,
+        width: 1000,
+        height: 400,
+        radius: 140
+    }).draw();
+}
+ $(function(){
+     $("#logData").jeDate({
+        format:"YYYY-MM-DD",
+        isTime:false, 
+        minDate:"2014-09-19"
+    });
+    $("#selectLog").on("click",function(e){
+        e.preventDefault();
+        //获取数据
+        var api = new Api();
+        curDate = $("#logData").val();
+        api.webStatus($("#form").serialize(),function(j){draw(j)});
+    });
+
+     
+});
+</script>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+{% block cont %}
+<h1 class="page-header">网站日志分析 By yzk</h1>
+<div>
+    <p class="lead">
+        {{ authorCont }}
+    </p>
+    <table class="table table-bordered table-striped">
+      <colgroup>
+        <col class="col-xs-1">
+        <col class="col-xs-7">
+      </colgroup>
+      <tbody>
+        <tr>
+          <td>
+            导入日志命令
+          </td>
+          <td>Python Log.py 日志文件名</td>
+        </tr>
+        <tr>
+          <td>
+            作者
+          </td>
+          <td>yzk</td>
+        </tr>
+        <tr>
+          <td>
+            版本
+          </td>
+          <td><code>v0.1</code></td>
+        </tr>
+        <tr>
+          <td>
+            ip
+          </td>
+          <td><code>{{ host }}</code></td>
+        </tr>
+        <tr>
+          <td>
+            端口
+          </td>
+          <td><code>{{ port }}</code></td>
+        </tr>
+        <tr>
+          <td>
+            网站
+          </td>
+          <td><code>{{ domain }}</code></td>
+        </tr>
+        <tr>
+          <td>
+            数据表数据
+          </td>
+          <td><code>{{ logNum }}条</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>这个小程序所使用的所有第三方库:</h3>
+    <table class="table table-bordered table-striped">
+      <colgroup>
+        <col class="col-xs-2">
+        <col class="col-xs-2">
+        <col class="col-xs-4">
+      </colgroup>
+      <thead>
+        <tr>
+          <td>库</td>
+          <td>描述</td>
+          <td>相关页面</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            pymysql
+          </td>
+          <td>Python3 操作Mysql库</td>
+          <td>待补充</td>
+        </tr>
+        <tr>
+          <td>
+            flask
+          </td>
+          <td>Python3 Web开发框架</td>
+          <td>http://docs.jinkan.org/docs/flask/</td>
+        </tr>
+        <tr>
+          <td>
+            jquery
+          </td>
+          <td>JavaScript库</td>
+          <td>http://jquery.com/</td>
+        </tr>
+        <tr>
+          <td>
+            bootstrap
+          </td>
+          <td>前端开发框架</td>
+          <td>http://www.bootcss.com/</td>
+        </tr>
+        <tr>
+          <td>
+            ichart
+          </td>
+          <td>基于HTML5的开源图形组件</td>
+          <td>http://www.ichartjs.com/</td>
+        </tr>
+        <tr>
+          <td>
+            jeDate
+          </td>
+          <td>日期选择插件</td>
+          <td>http://singod.github.io/jeDate/</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+        <p class="lead">
+            数据必须手动导入，由于目前暂时数据量不是很巨大，没有考虑优化的方案，可能以后会考虑。
+        </p>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+<script>
+
+</script>
+{% endblock %}

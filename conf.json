@@ -1,0 +1,19 @@
+{
+    "db":{
+        "host":"loaclhost",
+        "database":"weblog",
+        "port":"3306",
+        "user":"root",
+        "pwd":"root",
+        "charset":"utf8"
+    },
+    "domain":"日志网站的域名",
+    "server":{
+        "port":9387,
+        "ip":"127.0.0.1",
+        "debug":1
+    },
+    "dump":{
+        "fitter":".js|.css|index.php|.jpg|.png|.gif|.ico"
+    }
+}

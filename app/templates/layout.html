@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>网站日志信息</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+    <link href="/static/css/jedate.css" rel="stylesheet">
+    {% block head %}
+    {% endblock %}
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">网站日志分析</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/datainfo">访问详情</a></li>
+            <li><a href="/webStatus">状态统计</a></li>
+            <li><a href="/bot">蜘蛛</a></li>
+            <li><a href="/relation">上下游</a></li>
+            <li><a href="/status">错误信息</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            {% if navindex %}
+            <li class="active"><a href="/">首页</a></li>
+            {% else %}
+            <li class=""><a href="/">首页</a></li>
+            {% endif %}
+
+            {% if navdatainfo %}
+            <li class="active"><a href="/datainfo">访问详情</a></li>
+            {% else %}
+            <li><a href="/datainfo">访问详情</a></li>
+            {% endif %}
+
+            {% if navwebStatus %}
+            <li class="active"><a href="/webStatus">状态统计</a></li>
+            {% else %}
+            <li><a href="/webStatus">状态统计</a></li>
+            {% endif %}
+
+            {% if navbot %}
+            <li class="active"><a href="/bot">蜘蛛</a></li>
+            {% else %}
+            <li><a href="/bot">蜘蛛</a></li>
+            {% endif %}
+
+            {% if navrelation %}
+            <li class="active"><a href="/relation">上下游</a></li>
+            {% else %}
+            <li><a href="/relation">上下游</a></li>
+            {% endif %}
+
+            {% if navstatus %}
+            <li class="active"><a href="/status">错误信息</a></li>
+            {% else %}
+            <li><a href="/status">错误信息</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% block cont %}
+            {% endblock %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/ichart.1.2.min.js"></script>
+    <script src="/static/js/jquery.jedate.min.js"></script>
+    <script src="/static/js/api.js"></script>
+    {% block footer %}
+    {% endblock %}
+  </body>
+</html>
