@@ -6,9 +6,9 @@
 
 ## 预览
 
-![image](https://github.com/zhikeye/PyWebLog/previewImages/1.png)
-![image](https://github.com/zhikeye/PyWebLog/previewImages/2.png)
-![image](https://github.com/zhikeye/PyWebLog/previewImages/3.png)
+![image](https://github.com/zhikeye/PyWebLog/blob/master/previewImages/1.png)
+![image](https://github.com/zhikeye/PyWebLog/blob/master/previewImages/2.png)
+![image](https://github.com/zhikeye/PyWebLog/blob/master/previewImages/3.png)
 
 
 ## 安装
